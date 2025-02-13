@@ -1,3 +1,15 @@
+body{
+    /* display: flex;
+    flex-direction: column; */
+    text-align: center;
+    background-color: black;
+}
+
+h1{
+    color: white;
+    font-family: Arial;
+}
+
 #myCanvas{
-    background-color: green;
+    background-color:#2a4;
 }
