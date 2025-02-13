@@ -14,20 +14,30 @@
         <button onclick="addRandomSegment()">Add Segment</button>
         <button onclick="removeRandomSegment()">Remove Segment</button>
         <button onclick="removeRandomPoint()">Remove Point</button>
-        <button onclick="removeAll()">RemoveAll</button>
+        <button onclick="removeAll()">🗑️</button>
+        <button onclick="save()">✅</button>
     </div>
 
     <script src="js/math/graph.js"></script>
     <script src="js/math/utils.js"></script>
+    <script src="js/viewport.js"></script>
+    <script src="js/world.js"></script>
     <script src="js/graphEditor.js"></script>
     <script src="js/primitives/point.js"></script>
     <script src="js/primitives/segment.js"></script>
+    <script src="js/primitives/polygon.js"></script>
+    <script src="js/primitives/envelope.js"></script>
 
     <script>
         function removeAll(){
-            graph.dispose();
-            ctx.clearRect(0,0,myCanvas.width,myCanvas.height);
-            graph.draw(ctx);
+            // graph.dispose();
+            // ctx.clearRect(0,0,myCanvas.width,myCanvas.height);
+            // graph.draw(ctx);
+            graphEditor.removeAll();
+        }
+
+        function save(){
+            localStorage.setItem("graph",JSON.stringify(graph));
         }
 
         function removeRandomSegment(){
@@ -93,15 +103,29 @@
         // const s3=new Segment(p1,p2);
         // const s4=new Segment(p1,p2);
 
-        const graph=new Graph(points=[p1,p2,p3,p4],segments=[s1]);
-        const graphEditor=new GraphEditor(myCanvas,graph);
+        const graphString=localStorage.getItem('graph');
+        const graphInfo=graphString?JSON.parse(graphString):null;
+        const graph=graphInfo?
+                            Graph.load(graphInfo)
+                            :new Graph();
+
+        const world=new World(graph);
+        // const graph=new Graph(points=[p1,p2,p3,p4],segments=[s1]);
+        const viewport=new Viewport(myCanvas);
+        const graphEditor=new GraphEditor(viewport,graph);
 
         function animate(){
-            ctx.clearRect(0,0,myCanvas.width,myCanvas.height);
+            viewport.reset();
+            world.generate();
+            world.draw(ctx);
+            ctx.globalAlpha=0.3;
             graphEditor.display();
+            // new Polygon(graph.points).draw(ctx);
+            // new Envelope(graph.segments[0],200,20).draw(ctx);
             requestAnimationFrame(animate);
         }
         animate();
+
         // graph.draw(ctx);
     </script> 
 </body>
