@@ -114,17 +114,35 @@
         const viewport=new Viewport(myCanvas);
         const graphEditor=new GraphEditor(viewport,graph);
 
-        function animate(){
+        let oldGraphHash=graph.hash();
+        animate();
+
+        // function animate(){
+        //     viewport.reset();
+        //     if(graph.hash()!=oldGraphHash){
+        //         world.generate();
+        //         oldGraphHash=graph.hash();
+        //     }
+        //     // world.generate();
+        //     world.draw(ctx);
+        //     ctx.globalAlpha=0.3;
+        //     graphEditor.display();
+        //     // new Polygon(graph.points).draw(ctx);
+        //     // new Envelope(graph.segments[0],200,20).draw(ctx);
+        //     requestAnimationFrame(animate);
+        // }
+        
+        function animate() {
             viewport.reset();
-            world.generate();
+            if (graph.hash() != oldGraphHash) {
+               world.generate();
+               oldGraphHash = graph.hash();
+            }
             world.draw(ctx);
-            ctx.globalAlpha=0.3;
+            ctx.globalAlpha = 0.3;
             graphEditor.display();
-            // new Polygon(graph.points).draw(ctx);
-            // new Envelope(graph.segments[0],200,20).draw(ctx);
             requestAnimationFrame(animate);
         }
-        animate();
 
         // graph.draw(ctx);
     </script> 

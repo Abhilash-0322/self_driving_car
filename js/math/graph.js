@@ -24,6 +24,10 @@ class Graph{
         return new Graph(points,segments);
     }
 
+    hash(){
+        JSON.stringify(this);
+    }
+
     addPoint(point){
         this.points.push(point);
     }
